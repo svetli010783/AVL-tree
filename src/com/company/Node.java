@@ -17,6 +17,27 @@ public class Node {
         this.parent = parent;
     }
 
+    public Node(int value, int height, Node right, Node left, Node parent) {
+        this.value = value;
+        this.height = height;
+        this.right = right;
+        this.left = left;
+        this.parent = parent;
+    }
+    public Node(Node node, Node parent){
+        this.value = node.value;
+        this.height = node.height;
+        this.right = node.right;
+        this.left = node.left;
+        this.parent = parent;
+    }
+    public Node(Node node){
+        this.value = node.value;
+        this.height = node.height;
+        this.right = node.right;
+        this.left = node.left;
+        this.parent = node.parent;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -36,9 +57,8 @@ public class Node {
     public String toString() {
         return "Node{" +
                 "value=" + value +
-                ", parent=" + parent +
-                ", left=" + left +
-                ", right=" + right +
+
                 '}';
     }
+
 }

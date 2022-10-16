@@ -1,5 +1,7 @@
 package com.company;
 
+import java.io.FileNotFoundException;
+
 public class Tree {
 
     private Node top = null;
@@ -15,24 +17,28 @@ public class Tree {
         Node node = new Node(value);
         if (top == null) {
             top = node;
-        }
-        add(top, top, value);
+        } else
+            add(top, top, node);
         return node;
     }
 
-    private Node add(Node node, Node parent, int value) {
-        if (node == null)
-            return (new Node(value, parent));
+    private Node add(Node node, Node parent, Node addedElement) {
 
-        if (node.value < value) {
-            node.right = add(node.right, node, value);
-        } else if (node.value > value) {
-            node.left = add(node.left, node, value);
+        if (node == null) {
+            addedElement.parent = parent;
+            return addedElement;
+        }
+
+        if (node.value < addedElement.value) {
+            node.right = add(node.right, node, addedElement);
+        } else if (node.value > addedElement.value) {
+            node.left = add(node.left, node, addedElement);
         }
 
         node.height = Math.max(height(node.right), height(node.left)) + 1;
 
-        turnIsNeed(isBalanced());
+        if (height(node) > 2)
+            node = balancing(node);
 
         return node;
     }
@@ -51,56 +57,70 @@ public class Tree {
         return search(top, value);
     }
 
-    private int search(Node node, int value) {
+    private Integer search(Node node, int value) {
         if (node != null) {
             if (node.value == value)
                 return node.value;
-
-            if (node.value < value) {
-                search(node.right, value);
-            }
-            if (node.value > value) {
-                search(node.left, value);
+            else if (node.value < value) {
+                return search(node.right, value);
+            } else {
+                return search(node.left, value);
             }
         }
-        return -1;
 
+//        throw new NotFoundException();
+        return null;
     }
-
 
     public boolean isBalanced() {
         return false;
     }
 
-    private void turnIsNeed(boolean isBalanced, Node node) {
-        if (node.height - node.left.height == 2) {
-            shortLeftTurn(node);
+    private Node balancing(Node node) {
+        if (height(node.right) - height(node.left) == 2) {
+            if (height(node.right.left) <= height(node.right.right))
+                return shortLeftTurn(node);
+            else
+                return longLeftTurn(node);
+        } else if (height(node.left) - height(node.right) == 2) {
+            if (height(node.left.right) <= height(node.right.right))
+                return shortRightTurn(node);
+            else
+                return longRightTurn(node);
         }
-    }
-
-
-    private void shortLeftTurn(Node node) {
-        Node copy = node;
-        node = copy.right;
-
-        copy.left.right = copy.right.left;
-        copy.left.left  =copy.left;
-
-        node.right = node.right.right;
-
+        return node;
 
     }
 
-    public void longLeftTurn() {
+
+    private Node shortLeftTurn(Node node) {
+        Node leftPart = node;
+        node = node.right;
+        node.parent = null;
+        leftPart.right = node.left;
+        leftPart.right.parent = leftPart;
+        node.left = leftPart;
+        leftPart.parent = node;
+        leftPart.height = node.height - 1;
+        return node;
+    }
+
+    public Node longLeftTurn(Node node) {
+        return node;
 
     }
 
-    public void shortRightTurn() {
+    public Node shortRightTurn(Node node) {
+        return node;
 
     }
 
-    public void longRightTurn() {
+    public Node longRightTurn(Node node) {
+        return node;
 
     }
 
+    public static class NotFoundException extends Exception {
+
+    }
 }

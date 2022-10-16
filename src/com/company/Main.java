@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -37,6 +38,7 @@ public class Main {
     public static void search(){
         System.out.println("Введите искомое число");
         int value = input.nextInt();
+
         System.out.println(AVL_TREE.search(value));
     }
 
