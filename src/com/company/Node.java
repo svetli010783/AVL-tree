@@ -44,8 +44,7 @@ public class Node {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        return value == node.value && Objects.equals(parent, node.parent)
-                && Objects.equals(left, node.left) && Objects.equals(right, node.right);
+        return value == node.value;
     }
 
     @Override
@@ -55,10 +54,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" +
-                "value=" + value +
-
-                '}';
+        return "" + value;
     }
 
 }

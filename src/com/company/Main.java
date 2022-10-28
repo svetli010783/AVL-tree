@@ -25,7 +25,7 @@ public class Main {
         else if(choice == 2)
             search();
         else if (choice == 3)
-            return;
+            remove();
         else if (choice == 4)
             System.exit(1);
 
@@ -40,6 +40,12 @@ public class Main {
         int value = input.nextInt();
 
         System.out.println(AVL_TREE.search(value));
+    }
+    public static void remove(){
+        System.out.println("Введите число которое хоотите удалить");
+        int value = input.nextInt();
+
+        AVL_TREE.remove(value);
     }
 
 
