@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TreeUi extends JFrame {
+public class TreeUi<V> extends JFrame {
     private final Graph graph = new SingleGraph("Test");
     private final JButton addButton = new JButton("ADD");
     private final JButton addManyButton = new JButton("ADD MANY");

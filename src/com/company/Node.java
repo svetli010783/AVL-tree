@@ -2,37 +2,41 @@ package com.company;
 
 import java.util.Objects;
 
-public class Node {
-    int value;
+public class Node<V> implements Comparable<Node<V>> {
+    Integer id;
+    V value;
     int height = 1;
-    Node right, left, parent;
+    Node<V> right, left, parent;
 
-
-    public Node(int value) {
+    public Node(Integer id, V value) {
+        this.id = id;
         this.value = value;
     }
 
-    public Node(int value, Node parent) {
-        this.value = value;
+    public Node(Integer id, Node<V> parent) {
+        this.id = id;
         this.parent = parent;
     }
+    public Node(Integer id) {
+        this.id = id;
+    }
 
-    public Node(int value, int height, Node right, Node left, Node parent) {
-        this.value = value;
+    public Node(Integer id, int height, Node<V> right, Node<V> left, Node<V> parent) {
+        this.id = id;
         this.height = height;
         this.right = right;
         this.left = left;
         this.parent = parent;
     }
-    public Node(Node node, Node parent){
-        this.value = node.value;
+    public Node(Node<V> node, Node<V> parent){
+        this.id = node.id;
         this.height = node.height;
         this.right = node.right;
         this.left = node.left;
         this.parent = parent;
     }
-    public Node(Node node){
-        this.value = node.value;
+    public Node(Node<V> node){
+        this.id = node.id;
         this.height = node.height;
         this.right = node.right;
         this.left = node.left;
@@ -43,18 +47,22 @@ public class Node {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Node node = (Node) o;
-        return value == node.value;
+        Node<V> node = (Node) o;
+        return id == node.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, parent, left, right);
+        return Objects.hash(id, parent, left, right);
     }
 
     @Override
     public String toString() {
-        return "" + value;
+        return "" + id;
     }
 
+    @Override
+    public int compareTo(Node<V> o) {
+        return this.id - o.id;
+    }
 }
