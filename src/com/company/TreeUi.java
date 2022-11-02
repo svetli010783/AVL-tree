@@ -2,14 +2,11 @@ package com.company;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.ui.layout.HierarchicalLayout;
 import org.graphstream.ui.layout.springbox.implementations.LinLog;
 import org.graphstream.ui.view.Viewer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,7 +20,7 @@ public class TreeUi<V> extends JFrame {
     private final JButton showButton = new JButton("SHOW");
     private final JTextField textField = new JTextField();
     private final JTextArea textArea = new JTextArea();
-    private final Tree avlTree = new Tree();
+    private final Tree<String> avlTree = new Tree<String>();
     private final LinLog hl = new LinLog();
 
     public TreeUi() {
@@ -58,7 +55,7 @@ public class TreeUi<V> extends JFrame {
 
         searchButton.addActionListener(e -> {
             if (!Objects.equals(textField.getText(), ""))
-                if (avlTree.search(Integer.parseInt(textField.getText())))
+                if (avlTree.containsKey(Integer.parseInt(textField.getText())))
                     textArea.append("TRUE");
                 else textArea.append("FALSE");
             textField.setText("");
@@ -79,7 +76,7 @@ public class TreeUi<V> extends JFrame {
             public void balanced() {
                 graph.clear();
                 textArea.setText("сбалансировано " + i.getAndIncrement());
-                Stack<Node> stack = avlTree.enumeration();
+                Stack<Node<String>> stack = avlTree.enumeration();
                 while (!stack.isEmpty()) {
                     var nodeId1 = stack.pop().toString();
                     graph.addNode(nodeId1).setAttribute("ui.class","Node");
@@ -95,7 +92,8 @@ public class TreeUi<V> extends JFrame {
     }
 
     private void add(int number) {
-        avlTree.add(number);
+        var value  = String.valueOf(number);
+        avlTree.put(number,value);
         var nodeId = String.valueOf(number);
         if (graph.getNode(nodeId) == null) {
             graph.addNode(nodeId).setAttribute("ui.class","Node");
@@ -112,7 +110,7 @@ public class TreeUi<V> extends JFrame {
         var rnd = new Random();
         Set<Integer> uniqueNumbers = new HashSet<>();
         while (uniqueNumbers.size() < count) {
-            uniqueNumbers.add(rnd.nextInt());
+            uniqueNumbers.add(Math.abs(rnd.nextInt() % 100));
         }
         return uniqueNumbers;
     }

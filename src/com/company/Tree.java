@@ -32,6 +32,8 @@ public class Tree<V> implements SortedMap<Integer, V> {
 
     }
 
+
+
     private Node<V> add(Node<V> node, Node<V> parent, Node<V> addedElement) {
 
         if (node == null) {
@@ -281,32 +283,49 @@ public class Tree<V> implements SortedMap<Integer, V> {
     //sort methods
     @Override
     public Comparator<? super Integer> comparator() {
-        return null;
+        return new NodeComparator();
     }
 
     @Override
     public SortedMap<Integer, V> subMap(Integer fromKey, Integer toKey) {
+        if (tailMap(fromKey).containsKey(toKey)){
+            SortedMap<Integer,V> sortedMap = new Tree<V>();
+            Node<V> current = search(top,toKey);
+            while (current != search(top,fromKey).parent){
+                sortedMap.put(current.id,current.value);
+                current = current.parent;
+            }
+            return sortedMap;
+        }
         return null;
     }
 
     @Override
     public SortedMap<Integer, V> headMap(Integer toKey) {
-        return null;
+        SortedMap<Integer,V> sortedMap = new Tree<V>();
+        Node<V> current = search(top,toKey);
+        while (current != null){
+            sortedMap.put(current.id,current.value);
+            current = current.parent;
+        }
+        return sortedMap;
     }
 
     @Override
     public SortedMap<Integer, V> tailMap(Integer fromKey) {
-        return null;
+        SortedMap<Integer,V> sortedMap = new Tree<V>();
+        sortedMap.put(search(top,fromKey).id,search(top,fromKey).value);
+        return sortedMap;
     }
 
     @Override
     public Integer firstKey() {
-        return null;
+        return top.id;
     }
 
     @Override
     public Integer lastKey() {
-        return null;
+        return findMin(top).id;
     }
 //map methods
     @Override
@@ -385,11 +404,13 @@ public class Tree<V> implements SortedMap<Integer, V> {
 
 
 
-    private static class NodeComparator implements Comparator<Node> {
+
+
+    private static class NodeComparator implements Comparator<Integer> {
 
         @Override
-        public int compare(Node o1, Node o2) {
-            return o2.id - o1.id;
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
         }
     }
 
